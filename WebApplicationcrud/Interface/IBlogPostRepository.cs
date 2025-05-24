@@ -7,7 +7,7 @@ namespace WebApplicationcrud.Interface
         Task<IEnumerable<Blog>> GetAllAsync();
         Task<Blog?> GetByIdAsync(Guid id);
         Task AddAsync(Blog blogPost);
-        Task UpdateAsync(Blog blogPost);
+        //Task UpdateAsync(Blog blogPost);
         Task DeleteAsync(Blog blogPost);
         Task<bool> SaveChangesAsync();
     }

@@ -1,4 +1,8 @@
-﻿using WebApplicationcrud.Interface;
+﻿using System.Reflection.Metadata;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using WebApplicationcrud.Interface;
+using WebApplicationcrud.Models;
 using WebApplicationcrud.Models.Entities;
 
 namespace WebApplicationcrud.Service
@@ -29,9 +33,33 @@ namespace WebApplicationcrud.Service
             return await _repo.SaveChangesAsync();
         }
 
-        public async Task<bool> UpdateAsync(Blog post)
+        public async Task<bool> UpdateAsync(Guid id, BlogDto post)
         {
-            await _repo.UpdateAsync(post);
+            //await _repo.UpdateAsync(post);
+            var existingPost = await _repo.GetByIdAsync(id);
+            if (existingPost == null) return false;
+
+            //if (!string.IsNullOrWhiteSpace(post.Title))
+            //    existingPost.Title = post.Title;
+
+            //if (!string.IsNullOrWhiteSpace(post.Content))
+            //    existingPost.Content = post.Content;
+
+            var dtoType = typeof(BlogDto);
+            var entityType = typeof(Blog);
+
+            foreach (var prop in dtoType.GetProperties())
+            {
+                var newValue = prop.GetValue(post);
+                if (newValue != null)
+                {
+                    var blogProp = entityType.GetProperty(prop.Name);
+                    if (blogProp != null && blogProp.CanWrite)
+                    {
+                        blogProp.SetValue(existingPost, newValue);
+                    }
+                }
+            }
             return await _repo.SaveChangesAsync();
         }
 

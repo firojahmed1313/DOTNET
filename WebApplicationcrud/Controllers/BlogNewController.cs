@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApplicationcrud.Models;
 using WebApplicationcrud.Models.Entities;
 using WebApplicationcrud.Service;
 
@@ -20,6 +21,8 @@ namespace WebApplicationcrud.Controllers
         public async Task<IActionResult> GetPosts()
         {
             var posts = await _service.GetAllAsync();
+            //Console.WriteLine(posts);
+            System.Diagnostics.Debug.WriteLine("This is a firoj log");
             return Ok(posts);
         }
 
@@ -39,11 +42,11 @@ namespace WebApplicationcrud.Controllers
             return CreatedAtAction(nameof(GetPost), new { id = post.Id }, post);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePost(Guid id, [FromBody] Blog post)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdatePost(Guid id, [FromBody] BlogDto post)
         {
             if (id != post.Id) return BadRequest();
-            var result = await _service.UpdateAsync(post);
+            var result = await _service.UpdateAsync(id,post);
             return result ? NoContent() : BadRequest();
         }
 

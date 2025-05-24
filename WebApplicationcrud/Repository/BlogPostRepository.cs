@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebApplicationcrud.Data;
 using WebApplicationcrud.Interface;
+using WebApplicationcrud.Models;
 using WebApplicationcrud.Models.Entities;
 
 namespace WebApplicationcrud.Repository
@@ -19,7 +20,7 @@ namespace WebApplicationcrud.Repository
             return await _context.blogs.ToListAsync();
         }
 
-        public async Task<Blog?> GetByIdAsync(int id)
+        public async Task<Blog?> GetByIdAsync(Guid id)
         {
             return await _context.blogs.FindAsync(id);
         }
@@ -29,15 +30,19 @@ namespace WebApplicationcrud.Repository
             await _context.blogs.AddAsync(blogPost);
         }
 
-        public async Task UpdateAsync(Blog blogPost)
+        //public Task UpdateAsync(BlogDto blogPost)
+        //{
+        //    _context.blogs.Update(blogPost);
+        //    return Task.CompletedTask;
+        //}
+
+        public Task DeleteAsync(Blog blogPost)
         {
-             _context.blogs.Update(blogPost);
+            _context.blogs.Remove(blogPost);
+            return Task.CompletedTask;
         }
 
-        public async Task DeleteAsync(Blog blogPost)
-        {
-             _context.blogs.Remove(blogPost);
-        }
+
 
         public async Task<bool> SaveChangesAsync()
         {
