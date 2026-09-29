@@ -1,5 +1,7 @@
-﻿using MediatR;
+﻿using System.Net;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Shared.DTOs;
 
 
 [ApiController]
@@ -28,6 +30,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [ProducesResponseType(typeof(ProductDto), (int)HttpStatusCode.OK)]
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await _mediator.Send(new GetProductByIdQuery(id));
