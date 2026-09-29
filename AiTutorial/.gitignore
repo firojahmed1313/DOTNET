@@ -20,6 +20,7 @@ Thumbs.db
 
 ## ASP.NET Core Secret Manager
 secrets.json
+appsettings.json
 
 ## Entity Framework
 Migrations/
